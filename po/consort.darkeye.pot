@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the consort.darkeye package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: consort\n"
+"Project-Id-Version: consort.darkeye\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-17 02:22+0000\n"
+"POT-Creation-Date: 2019-09-26 11:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,8 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Hello World!"
+#: ../qml/pages/SettingsPage.qml:26 ../qml/Main.qml:42 ../qml/Main.qml:55
+msgid "Settings"
 msgstr ""
 
+#: ../qml/pages/SettingsPage.qml:32
+msgid "Settings Page"
+msgstr ""
+
+#: ../qml/pages/InfoPage.qml:26 ../qml/Main.qml:47 ../qml/Main.qml:60
+msgid "Info"
+msgstr ""
+
+#: ../qml/pages/InfoPage.qml:31
+msgid "Info Page"
+msgstr ""
+
+#: ../qml/Main.qml:128 consort.desktop.in.h:1
 msgid "Consort"
+msgstr ""
+
+#: ../qml/Main.qml:141
+msgid "Hello World!"
 msgstr ""

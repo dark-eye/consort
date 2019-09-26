@@ -16,9 +16,12 @@
 
 import QtQuick 2.7
 import Ubuntu.Components 1.3
-//import QtQuick.Controls 2.2
+import QtQuick.Controls 2.2 as QC2
 import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
+
+import "./components"
 import Consort 1.0
 
 MainView {
@@ -30,29 +33,116 @@ MainView {
     width: units.gu(45)
     height: units.gu(75)
 
-    Page {
-        anchors.fill: parent
+	MainSections {
+		id:mainSections
+		bottomHideEnabled:true
+		z:1
+		menuModel:[
+			{
+				text:i18n.tr("Settings"),
+				iconName:"settings",
+				pageUrl:"pages/SettingsPage.qml",
+			},
+			{
+				text:i18n.tr("Info"),
+				iconName:"info",
+				pageUrl:"pages/InfoPage.qml",
+			},
+		]
 
-        header: PageHeader {
-            id: header
-            title: i18n.tr('Consort')
-        }
+		model:[
+			{
+				text:i18n.tr("Settings"),
+				iconName:"settings",
+				pageUrl:"pages/SettingsPage.qml",
+			},
+			{
+				text:i18n.tr("Info"),
+				iconName:"info",
+				pageUrl:"pages/InfoPage.qml",
 
-        Item {
-            anchors {
-                top: header.bottom
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
-            }
+			},
+		]
+		layer {
+			enabled:!mainSections.isBottom
+			effect:DropShadow {
+				transparentBorder:true
+				radius:7
+			}
+		}
 
-            Label {
-                anchors.centerIn: parent
-                text: i18n.tr('Hello World!')
-            }
-        }
+		onMenuClicked: {
+			console.log(itemData)
+				if(itemData) {
+					mainAdaptiveLayout.addPageToNextColumn(mainPage,Qt.resolvedUrl(itemData) );
+				}
+		}
+		onSectionClicked: {
+			console.log(itemData)
+			if(itemData) {
+				mainAdaptiveLayout.addPageToCurrentColumn(mainPage,Qt.resolvedUrl(itemData) );
+			}
+		}
+	}
 
-    }
+	AdaptivePageLayout {
+		id:mainAdaptiveLayout
+		anchors.leftMargin: mainSections.isBottom ? 0 : mainSections.width + mainSections.anchors.leftMargin
+		anchors.fill:parent
+ 		layouts: [
+			PageColumnsLayout {
+				when: width > units.gu(90) && mainAdaptiveLayout.columns > 1
+				PageColumn {
+					fillWidth: true
+				}
+				PageColumn {
+                    minimumWidth: units.gu(0)
+                    maximumWidth: units.gu(60)
+                    preferredWidth: units.gu(40)
+				}
+			},
+			PageColumnsLayout {
+				when:  width <= units.gu(90)
+				PageColumn {
+					fillWidth: true
+				}
+			},
+			PageColumnsLayout {
+				when: true
+				PageColumn {
+					fillWidth: true
+				}
+				PageColumn {
+                    maximumWidth: units.gu(0)
+                    preferredWidth: units.gu(00)
+				}
+			}
+		]
+		asynchronous:true
+		primaryPage: Page {
+			id:mainPage
+			anchors.fill: parent
+
+			header: PageHeader {
+				id: header
+				title: i18n.tr('Consort')
+			}
+
+			Item {
+				anchors {
+					top: header.bottom
+					bottom: parent.bottom
+					left: parent.left
+					right: parent.right
+				}
+
+				Label {
+					anchors.centerIn: parent
+					text: i18n.tr('Hello World!')
+				}
+			}
+		}
+	}
 
     Component.onCompleted: Consort.speak()
 }
