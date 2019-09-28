@@ -20,26 +20,21 @@ import QtQuick 2.7
 import Ubuntu.Components 1.3
 import QtQuick.Controls 2.2 as QC2
 
-Page {
-	id:mainPage
-	anchors.fill: parent
+ListView {
+		id:_sectionsList
 
-	header: PageHeader {
-		id: header
-		title: i18n.tr('Consort')
+		signal itemClicked(string itemData)
+
+
+		property bool hidden: false
+
+
+		spacing:units.gu(0.5)
+		boundsBehavior:Flickable.StopAtBounds
+
+		delegate:MainPaneListItem {
+                vertical: orientation == ListView.Vertical
+                hidden: _sectionsList.hidden
+                parentList:_sectionsList
+        }
 	}
-
-	Item {
-		anchors {
-			top: header.bottom
-			bottom: parent.bottom
-			left: parent.left
-			right: parent.right
-		}
-
-		Label {
-			anchors.centerIn: parent
-			text: i18n.tr('Hello World!')
-		}
-	}
-}

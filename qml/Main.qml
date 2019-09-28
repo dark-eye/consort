@@ -35,7 +35,7 @@ MainView {
 
 	MainSections {
 		id:mainSections
-		bottomHideEnabled:true
+		bottomHideEnabled:false
 		z:1
 		menuModel:[
 			{
@@ -62,19 +62,25 @@ MainView {
 				pageUrl:"pages/InfoPage.qml",
 
 			},
+            {
+				text:i18n.tr("Main Page"),
+				iconName:"external-link",
+				pageUrl:"pages/MainPage.qml",
+
+			},
 		]
 		layer {
-			enabled:!mainSections.isBottom
+			enabled:!(mainSections.isBottom && mainSections.bottomHideEnabled)
 			effect:DropShadow {
 				transparentBorder:true
-				radius:7
+				radius:5
 			}
 		}
 
 		onMenuClicked: {
 			console.log(itemData)
 				if(itemData) {
-					mainAdaptiveLayout.addPageToNextColumn(mainPage,Qt.resolvedUrl(itemData) );
+					mainAdaptiveLayout.addPageToNextColumn(mainAdaptiveLayout.primaryPage,Qt.resolvedUrl(itemData) );
 				}
 		}
 		onSectionClicked: {

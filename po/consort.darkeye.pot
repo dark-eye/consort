@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: consort.darkeye\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-26 11:51+0000\n"
+"POT-Creation-Date: 2019-09-28 06:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,14 @@ msgstr ""
 msgid "Settings Page"
 msgstr ""
 
+#: ../qml/pages/MainPage.qml:29 ../qml/Main.qml:134 consort.desktop.in.h:1
+msgid "Consort"
+msgstr ""
+
+#: ../qml/pages/MainPage.qml:42 ../qml/Main.qml:147
+msgid "Hello World!"
+msgstr ""
+
 #: ../qml/pages/InfoPage.qml:26 ../qml/Main.qml:47 ../qml/Main.qml:60
 msgid "Info"
 msgstr ""
@@ -33,10 +41,6 @@ msgstr ""
 msgid "Info Page"
 msgstr ""
 
-#: ../qml/Main.qml:128 consort.desktop.in.h:1
-msgid "Consort"
-msgstr ""
-
-#: ../qml/Main.qml:141
-msgid "Hello World!"
+#: ../qml/Main.qml:66
+msgid "Main Page"
 msgstr ""

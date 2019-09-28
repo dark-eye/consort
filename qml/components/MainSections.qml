@@ -20,6 +20,8 @@ import QtQuick 2.7
 import Ubuntu.Components 1.3
 import QtQuick.Controls 2.2 as QC2
 
+import "./MainPane/"
+
 Item {
 	id:_mainSections
 
@@ -91,12 +93,13 @@ Item {
 	}
 
 
-	FlipableListView {
+	MainPaneListView {
 		id:_sectionsList
 		anchors.fill:parent
 		anchors.topMargin: isBottom ? units.gu(0.1) : _menuListWrapper.height + _menuListWrapper.anchors.bottomMargin
 		anchors.leftMargin: isBottom ? _menuListWrapper.width + _menuListWrapper.anchors.rightMargin : 0
-		vertical:  _mainSections.state == 'anchors_left' || _mainSections.state == 'hidden_anchors_left'
+		
+		orientation:  _mainSections.state == 'anchors_left' || _mainSections.state == 'hidden_anchors_left' ? ListView.Vertical : ListView.Horizontal
 		hidden:_mainSections.hidden
 
 		onItemClicked:{
@@ -133,10 +136,12 @@ Item {
 
 			}
 		]
-		FlipableListView {
+		MainPaneListView {
 			id:_menuList
 			anchors.fill:parent
-			vertical:  !(_mainSections.state == 'anchors_left' || _mainSections.state == 'hidden_anchors_left')
+			orientation: !(_mainSections.state == 'anchors_left' || _mainSections.state == 'hidden_anchors_left') ? 
+                                ListView.Vertical : 
+                                ListView.Horizontal
 
 			onItemClicked:{
 				console.log(itemData)
