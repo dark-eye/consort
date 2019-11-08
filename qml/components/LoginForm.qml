@@ -1,6 +1,6 @@
 /*
  * <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) 2019  eran <email>
+ * Copyright (C) 2019  Eran <darkeye@librem.one>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +17,33 @@
  */
 
 import QtQuick 2.7
-import org.kde.kirigami 2.4
 import QtQuick.Controls 2.2 as QC2
 
-ListView {
-		id:_sectionsList
-
-		signal itemClicked(var itemData)
-
-		property bool hidden: false
-
-		spacing:helperFunctions.pxToGrid(0.5)
-		boundsBehavior:Flickable.StopAtBounds
-
-		delegate:MainPaneListItem {
-                vertical: orientation == ListView.Vertical
-                hidden: _sectionsList.hidden
-                parentList:_sectionsList
-                
-                onClicked: {
-                    parentList.itemClicked(modelData)
-                }
+Item {
+    Column {
+        id:loginFormFields
+        Column {            
+            QC2.Label {
+                text:i18n.tr("User name / Email")
+            }
+            TextInput {
+                id:userInput
+            }
         }
-	}
+        Column {
+            QC2.Label {
+                text:i18n.tr("Password")
+            }
+            TextInput {
+                id:passInput
+                echoMode:TextInput.Password 
+            }
+        }
+        Column {
+            QC2.Button {
+                text:i18n.tr("Login")
+            }
+            //TODO add registeration
+        }
+   }    
+}

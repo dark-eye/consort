@@ -17,7 +17,7 @@
  */
 
 import QtQuick 2.7
-import Ubuntu.Components 1.3
+import org.kde.kirigami 2.4 as Kirigami
 import QtQuick.Controls 2.2 as QC2
 
 import "./MainPane/"
@@ -26,13 +26,13 @@ Item {
 	id:_mainSections
 
 
-	signal sectionClicked(string itemData)
-	signal menuClicked(string itemData)
+	signal sectionClicked(var itemData)
+	signal menuClicked(var itemData)
 
-	property int minimumLeftPanelWidth: units.gu(40)
-	property int hiddenSize: units.gu(4)
-	property int bottomHeight: units.gu(8)
-	property int leftWidth: units.gu(20)
+	property int minimumLeftPanelWidth: helperFunctions.pxToGrid(40)
+	property int hiddenSize: helperFunctions.pxToGrid(4)
+	property int bottomHeight: helperFunctions.pxToGrid(8)
+	property int leftWidth: helperFunctions.pxToGrid(20)
 	property bool hidden:false
 	property bool bottomHideEnabled:false
 
@@ -42,6 +42,8 @@ Item {
 	property alias model:_sectionsList.model
 	property alias sectionsListView:_sectionsList
 	property alias hideShowBtn:_hideShowBtn
+	
+    property var currentSection: null
 
 
 
@@ -82,44 +84,55 @@ Item {
 		}
 	]
 
-	Behavior on anchors.leftMargin { UbuntuNumberAnimation {} }
-	Behavior on anchors.bottomMargin { UbuntuNumberAnimation {} }
-//	Behavior on anchors.bottom { UbuntuNumberAnimation {} }
+	Behavior on anchors.leftMargin { NumberAnimation {} }
+	Behavior on anchors.bottomMargin { NumberAnimation {} }
+	Behavior on width { NumberAnimation { duration:100} }
+
 
 	Rectangle {
 		id:_bkgRect
 		anchors.fill:parent
-		color:theme.palette.normal.base
+		color:Kirigami.Theme.backgroundColor
 	}
 
 
 	MainPaneListView {
 		id:_sectionsList
 		anchors.fill:parent
-		anchors.topMargin: isBottom ? units.gu(0.1) : _menuListWrapper.height + _menuListWrapper.anchors.bottomMargin
+		anchors.topMargin: isBottom ? helperFunctions.pxToGrid(0.1) : _menuListWrapper.height + _menuListWrapper.anchors.bottomMargin
 		anchors.leftMargin: isBottom ? _menuListWrapper.width + _menuListWrapper.anchors.rightMargin : 0
 		
 		orientation:  _mainSections.state == 'anchors_left' || _mainSections.state == 'hidden_anchors_left' ? ListView.Vertical : ListView.Horizontal
 		hidden:_mainSections.hidden
 
+		delegate:MainPaneListItem {
+                vertical: _sectionsList.orientation == ListView.Vertical
+                hidden: _sectionsList.hidden
+                parentList:_sectionsList
+                highlighted : currentSection == modelData.text
+                 
+                onClicked: {
+                    parentList.itemClicked(modelData)
+                }
+        }
+		
 		onItemClicked:{
-			console.log(itemData)
 			_mainSections.sectionClicked(itemData)
 		}
 	}
 
 	Item {
 		id:_menuListWrapper
-		anchors.top:_bkgRect.top
-		anchors.margins:units.gu(0.25)
+		anchors.top:parent.top
+		anchors.margins:helperFunctions.pxToGrid(0.25)
 		states:[
 			State {
 				name:"left"
 				when: (_mainSections.state == 'anchors_left' || _mainSections.state == 'hidden_anchors_left')
 				PropertyChanges { target: _menuListWrapper; anchors.bottom:undefined }
 				PropertyChanges { target: _menuListWrapper; anchors.topMargin:0}
-				PropertyChanges { target: _menuListWrapper; anchors.bottomMargin:units.gu(2)}
-				PropertyChanges { target: _menuListWrapper; anchors.rightMargin:units.gu(8) }
+				PropertyChanges { target: _menuListWrapper; anchors.bottomMargin:helperFunctions.pxToGrid(2)}
+				PropertyChanges { target: _menuListWrapper; anchors.rightMargin:helperFunctions.pxToGrid(8) }
 				PropertyChanges { target: _menuListWrapper; anchors.left:_bkgRect.left }
 				PropertyChanges { target: _menuListWrapper; anchors.right:_hideShowBtn.left }
 				PropertyChanges { target: _menuListWrapper; height: _hideShowBtn.height}
@@ -130,9 +143,9 @@ Item {
 				when: !(_mainSections.state == 'anchors_left' || _mainSections.state == 'hidden_anchors_left')
 				PropertyChanges { target: _menuListWrapper; anchors.left:undefined }
 				PropertyChanges { target: _menuListWrapper; anchors.right:undefined }
-				PropertyChanges { target: _menuListWrapper; anchors.rightMargin:units.gu(2) }
-				PropertyChanges { target: _menuListWrapper; height: _bkgRect.height - units.gu(2) }
-				PropertyChanges { target: _menuListWrapper; width: units.gu(4) }
+				PropertyChanges { target: _menuListWrapper; anchors.rightMargin:helperFunctions.pxToGrid(2) }
+				PropertyChanges { target: _menuListWrapper; height: _bkgRect.height - helperFunctions.pxToGrid(2) }
+				PropertyChanges { target: _menuListWrapper; width: helperFunctions.pxToGrid(4) }
 
 			}
 		]
@@ -144,7 +157,6 @@ Item {
                                 ListView.Horizontal
 
 			onItemClicked:{
-				console.log(itemData)
 				_mainSections.menuClicked(itemData)
 			}
 
@@ -164,9 +176,9 @@ Item {
 				when: _mainSections.state == 'anchors_left' || _mainSections.state == 'hidden_anchors_left'
 				PropertyChanges { target: _hideShowBtn; anchors.horizontalCenter:undefined }
 				PropertyChanges { target: _hideShowBtn; anchors.right:_mainSections.right }
-				PropertyChanges { target: _hideShowBtn; width: hidden ? hiddenSize : units.gu(4) }
-				PropertyChanges { target: _hideShowBtn; height:units.gu(4) }
-				PropertyChanges { target: _hideShowBtn; icon.name:hidden ? "contextual-menu" : "back" }
+				PropertyChanges { target: _hideShowBtn; width: hidden ? hiddenSize : helperFunctions.pxToGrid(4) }
+				PropertyChanges { target: _hideShowBtn; height:helperFunctions.pxToGrid(4) }
+				PropertyChanges { target: _hideShowBtn; icon.source:hidden ? "image://theme/contextual-menu" : "image://theme/back" }
 
 			},
 			State {
@@ -174,23 +186,21 @@ Item {
 				when: _mainSections.state == 'anchors_bottom' || _mainSections.state == 'hidden_anchors_bottom'
 				PropertyChanges { target: _hideShowBtn; anchors.right:undefined }
 				PropertyChanges { target: _hideShowBtn; anchors.horizontalCenter:_mainSections.horizontalCenter }
-				PropertyChanges { target: _hideShowBtn; width: units.gu(8) }
+				PropertyChanges { target: _hideShowBtn; width: helperFunctions.pxToGrid(8) }
 				PropertyChanges { target: _hideShowBtn; height:hiddenSize/2 }
-				PropertyChanges { target: _hideShowBtn; icon.name:hidden ? "up" : "down" }
+				PropertyChanges { target: _hideShowBtn; icon.source:hidden ? "image://theme/up" : "image://theme/down" }
 			}
 		]
 
 
-		Behavior on height { UbuntuNumberAnimation {} }
-		Behavior on width { UbuntuNumberAnimation {} }
- 		//text: hidden ? i18n.tr('show') : i18n.tr('hide')
+		Behavior on height { NumberAnimation {} }
+		Behavior on width { NumberAnimation {} }
 
-		Icon {
+		Kirigami.Icon {
 			id:_icon
 			anchors.centerIn:parent
-			width:units.gu(2)
+			width:helperFunctions.pxToGrid(2)
 			height:width
-			asynchronous:true
 		}
 
 		onClicked: { hidden = !hidden }

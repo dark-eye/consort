@@ -17,18 +17,20 @@
  */
 
 import QtQuick 2.7
-import Ubuntu.Components 1.3
+import org.kde.kirigami 2.4 as Kirigami
 import QtQuick.Controls 2.2 as QC2
 
-Page {
+Kirigami.Page {
 
-	header:PageHeader {
-		title:i18n.tr('Settings')
-	}
+// 	header:PageHeader {
+		title:'Settings'
+// 	}
+
+    width:helperFunctions.pxToGrid(40)
 
 
-	Label {
+	QC2.Label {
 		anchors.centerIn: parent
-		text: i18n.tr('Settings Page')
+		text: 'Settings Page'
 	}
 }

@@ -15,7 +15,7 @@
  */
 
 import QtQuick 2.7
-import Ubuntu.Components 1.3
+import org.kde.kirigami 2.4 as Kirigami
 import QtQuick.Controls 2.2 as QC2
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
@@ -24,27 +24,36 @@ import Qt.labs.settings 1.0
 import "./components"
 import Consort 1.0
 
-MainView {
+Kirigami.ApplicationWindow  {
     id: root
     objectName: 'mainView'
-    applicationName: 'consort.darkeye'
-    automaticOrientation: true
+//     applicationName: 'consort.darkeye'
 
-    width: units.gu(45)
-    height: units.gu(75)
+    width: helperFunctions.pxToGrid(45)
+    height: helperFunctions.pxToGrid(75)
 
+    
+//     header: Kirigami.ApplicationHeader {}
+    
+    Settings {
+        id:appSettings
+        property var currentInstance
+        property var instances
+    }
+    
+    
 	MainSections {
 		id:mainSections
 		bottomHideEnabled:false
 		z:1
 		menuModel:[
 			{
-				text:i18n.tr("Settings"),
+				text:"Settings",
 				iconName:"settings",
 				pageUrl:"pages/SettingsPage.qml",
 			},
 			{
-				text:i18n.tr("Info"),
+				text:"Info",
 				iconName:"info",
 				pageUrl:"pages/InfoPage.qml",
 			},
@@ -52,18 +61,18 @@ MainView {
 
 		model:[
 			{
-				text:i18n.tr("Settings"),
+				text:"Settings",
 				iconName:"settings",
 				pageUrl:"pages/SettingsPage.qml",
 			},
 			{
-				text:i18n.tr("Info"),
+				text:"Info",
 				iconName:"info",
 				pageUrl:"pages/InfoPage.qml",
 
 			},
             {
-				text:i18n.tr("Main Page"),
+// 				text:"Main Page",
 				iconName:"external-link",
 				pageUrl:"pages/MainPage.qml",
 
@@ -78,77 +87,26 @@ MainView {
 		}
 
 		onMenuClicked: {
-			console.log(itemData)
-				if(itemData) {
-					mainAdaptiveLayout.addPageToNextColumn(mainAdaptiveLayout.primaryPage,Qt.resolvedUrl(itemData) );
-				}
+            if(itemData) {
+                pageStack.push( Qt.resolvedUrl(itemData.pageUrl) );
+            }
 		}
 		onSectionClicked: {
-			console.log(itemData)
 			if(itemData) {
-				mainAdaptiveLayout.addPageToCurrentColumn(mainPage,Qt.resolvedUrl(itemData) );
+				pageStack.push(Qt.resolvedUrl(itemData.pageUrl) );
+                mainSections.currentSection = itemData.text
 			}
 		}
 	}
-
-	AdaptivePageLayout {
-		id:mainAdaptiveLayout
-		anchors.leftMargin: mainSections.isBottom ? 0 : mainSections.width + mainSections.anchors.leftMargin
-		anchors.fill:parent
- 		layouts: [
-			PageColumnsLayout {
-				when: width > units.gu(90) && mainAdaptiveLayout.columns > 1
-				PageColumn {
-					fillWidth: true
-				}
-				PageColumn {
-                    minimumWidth: units.gu(0)
-                    maximumWidth: units.gu(60)
-                    preferredWidth: units.gu(40)
-				}
-			},
-			PageColumnsLayout {
-				when:  width <= units.gu(90)
-				PageColumn {
-					fillWidth: true
-				}
-			},
-			PageColumnsLayout {
-				when: true
-				PageColumn {
-					fillWidth: true
-				}
-				PageColumn {
-                    maximumWidth: units.gu(0)
-                    preferredWidth: units.gu(00)
-				}
-			}
-		]
-		asynchronous:true
-		primaryPage: Page {
-			id:mainPage
-			anchors.fill: parent
-
-			header: PageHeader {
-				id: header
-				title: i18n.tr('Consort')
-			}
-
-			Item {
-				anchors {
-					top: header.bottom
-					bottom: parent.bottom
-					left: parent.left
-					right: parent.right
-				}
-
-				Label {
-					anchors.centerIn: parent
-					text: i18n.tr('Hello World!')
-				}
-			}
-		}
-	}
+	pageStack.initialPage: Qt.resolvedUrl("pages/MainPage.qml")
+    
+    QtObject { 
+        id:helperFunctions
+        
+        function pxToGrid(px) {
+            return Kirigami.Units.gridUnit * px;
+        }
+    }
 
     Component.onCompleted: Consort.speak()
 }

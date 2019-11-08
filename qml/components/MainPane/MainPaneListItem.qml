@@ -17,20 +17,20 @@
  */
 
 import QtQuick 2.7
-import Ubuntu.Components 1.3
+import org.kde.kirigami 2.4 as Kirigami
 import QtQuick.Controls 2.2 as QC2
 QC2.ToolButton {
     id:sectionsItem
-    anchors.margins:units.gu(0.5)
+    anchors.margins:helperFunctions.pxToGrid(0.5)
     
     property bool vertical:true
     property bool hidden: false
-    property int maxItemHeight:units.gu(10)
-    property int maxItemWidth:units.gu(25)
+    property int maxItemHeight:helperFunctions.pxToGrid(10)
+    property int maxItemWidth:helperFunctions.pxToGrid(25)
     property var parentList: null
     
     clip:true
-    onStateChanged:console.log(state)
+//     transitions: Transition  { AnchorAnimation {duration:100} }
     states:[
         State {
             name:"left_hidden"
@@ -38,6 +38,7 @@ QC2.ToolButton {
             extend: "left"
             PropertyChanges { target: sectionsItemIcon; anchors.left:undefined}
             PropertyChanges { target: sectionsItemIcon; anchors.right:sectionsItem.right}
+            PropertyChanges { target: sectionsItemLabel; visible:false}
         },
         State {
             name:"left"
@@ -54,14 +55,16 @@ QC2.ToolButton {
             PropertyChanges { target: sectionsItemLabel; anchors.verticalCenter:sectionsItem.verticalCenter}
             PropertyChanges { target: sectionsItemLabel; anchors.left:sectionsItemIcon.right}
             PropertyChanges { target: sectionsItemLabel; anchors.leftMargin:sectionsItemIcon.width + sectionsItemIcon.anchors.margins}
+            PropertyChanges { target: sectionsItemLabel; visible:true}
 
         },
         State {
             name:"bottom_no_text"
-            when: !vertical && !sectionsItemLabel.visible
+            when: !vertical && !( sectionsItem.width  >= units.dp(9) * sectionsItemLabel.text.length)
             extend:"bottom"
             PropertyChanges { target: sectionsItemIcon; anchors.top:undefined }
             PropertyChanges { target: sectionsItemIcon; anchors.verticalCenter:sectionsItem.verticalCenter}
+            PropertyChanges { target: sectionsItemLabel; visible:false}
 
         },
         State {
@@ -77,24 +80,25 @@ QC2.ToolButton {
             PropertyChanges { target: sectionsItemLabel; anchors.right:undefined}
             PropertyChanges { target: sectionsItemLabel; anchors.horizontalCenter:sectionsItem.horizontalCenter}
             PropertyChanges { target: sectionsItemLabel; anchors.top:sectionsItemIcon.bottom}
+            PropertyChanges { target: sectionsItemLabel; visible:true}
 
         }
     ]
-    Label {
-        id:sectionsItemLabel
-        anchors.margins:units.gu(0.5)
-        visible: !hidden && vertical || sectionsItem.width  >= units.dp(12) * text.length
-        text: modelData.text
-    }
-    Icon {
+    
+    Kirigami.Icon {
         id:sectionsItemIcon
-        anchors.margins:units.gu(0.75)
-        width:Math.min(units.gu(2.5),sectionsItem.width,sectionsItem.height)
+        anchors.top:sectionsItem.top
+        anchors.margins:helperFunctions.pxToGrid(0.75)
+        width:Math.min(helperFunctions.pxToGrid(2.5),sectionsItem.width,sectionsItem.height)
         height:width
-        name: modelData.iconName ? modelData.iconName : ""
+        source: modelData.iconName  ? "image://theme/%1".arg( modelData.iconName ) : ""
+        color:"white"
+        transitions: Transition  { AnchorAnimation {duration:2000} }
     }
-
-    onClicked: {
-        parentList.itemClicked(modelData.pageUrl)
+    
+    QC2.Label {
+        id:sectionsItemLabel
+        anchors.margins:helperFunctions.pxToGrid(0.5)
+        text: modelData.text
     }
 }

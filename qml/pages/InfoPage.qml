@@ -17,16 +17,43 @@
  */
 
 import QtQuick 2.7
-import Ubuntu.Components 1.3
+import org.kde.kirigami 2.4 as Kirigami
 import QtQuick.Controls 2.2 as QC2
 
-Page {
+Kirigami.AboutPage {
 
-	header:PageHeader {
-		title:i18n.tr('Info')
-	}
+	aboutData: {
+        "displayName" : "KirigamiApp",
+        "productName" : "kirigami/app",
+        "componentName" : "kirigamiapp",
+        "shortDescription" : "A Kirigami example",
+        "homepage" : "",
+        "bugAddress" : "submit@bugs.kde.org",
+        "version" : "5.14.80",
+        "otherText" : "",
+        "authors" : [
+            {
+                "name" : "...",
+                "task" : "",
+                "emailAddress" : "somebody@kde.org",
+                "webAddress" : "",
+                "ocsUsername" : ""
+            }
+        ],
+        "credits" : [],
+        "translators" : [],
+        "licenses" : [
+            {
+                "name" : "GPL v2",
+                "text" : "long, boring, license text",
+                "spdx" : "GPL-2.0"
+            }
+        ],
+        "copyrightStatement" : "© 2010-2018 Plasma Development Team",
+        "desktopFileName" : "org.kde.kirigamiapp"
+    }
 
-	Label {
+	QC2.Label {
 		anchors.centerIn: parent
 		text: i18n.tr('Info Page')
 	}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: consort.darkeye\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-28 06:02+0000\n"
+"POT-Creation-Date: 2019-11-08 21:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,30 +17,46 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/pages/SettingsPage.qml:26 ../qml/Main.qml:42 ../qml/Main.qml:55
-msgid "Settings"
+#: ../qml/pages/InstancePicker.qml:80
+msgid "Choose a Diaspora instance"
 msgstr ""
 
-#: ../qml/pages/SettingsPage.qml:32
-msgid "Settings Page"
-msgstr ""
-
-#: ../qml/pages/MainPage.qml:29 ../qml/Main.qml:134 consort.desktop.in.h:1
-msgid "Consort"
-msgstr ""
-
-#: ../qml/pages/MainPage.qml:42 ../qml/Main.qml:147
-msgid "Hello World!"
-msgstr ""
-
-#: ../qml/pages/InfoPage.qml:26 ../qml/Main.qml:47 ../qml/Main.qml:60
+#: ../qml/pages/InstancePicker.qml:88
 msgid "Info"
 msgstr ""
 
-#: ../qml/pages/InfoPage.qml:31
+#: ../qml/pages/InstancePicker.qml:118
+msgid "Error loading instances nodes"
+msgstr ""
+
+#: ../qml/pages/InstancePicker.qml:129
+msgid "Search or enter a custom address"
+msgstr ""
+
+#: ../qml/pages/InstancePicker.qml:174
+msgid "No pods fund for search : %1"
+msgstr ""
+
+#: ../qml/pages/InstancePicker.qml:174
+msgid "No pods returned from server"
+msgstr ""
+
+#: ../qml/pages/InfoPage.qml:58
 msgid "Info Page"
 msgstr ""
 
-#: ../qml/Main.qml:66
-msgid "Main Page"
+#: ../qml/components/LoginForm.qml:27
+msgid "User name / Email"
+msgstr ""
+
+#: ../qml/components/LoginForm.qml:35
+msgid "Password"
+msgstr ""
+
+#: ../qml/components/LoginForm.qml:44
+msgid "Login"
+msgstr ""
+
+#: consort.desktop.in.h:1
+msgid "Consort"
 msgstr ""

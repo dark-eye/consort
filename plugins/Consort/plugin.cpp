@@ -23,4 +23,9 @@
 void ConsortPlugin::registerTypes(const char *uri) {
     //@uri Consort
     qmlRegisterSingletonType<Consort>(uri, 1, 0, "Consort", [](QQmlEngine*, QJSEngine*) -> QObject* { return new Consort; });
+    
+}
+
+void ConsortPlugin::initializeEngine(QQmlEngine *engine, const char *uri) {
+    //engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
 }

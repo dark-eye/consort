@@ -18,6 +18,7 @@
 #define CONSORTPLUGIN_H
 
 #include <QQmlExtensionPlugin>
+#include <QQmlEngine>
 
 class ConsortPlugin : public QQmlExtensionPlugin {
     Q_OBJECT
@@ -25,6 +26,7 @@ class ConsortPlugin : public QQmlExtensionPlugin {
 
 public:
     void registerTypes(const char *uri);
+    void initializeEngine(QQmlEngine *engine, const char *uri);
 };
 
 #endif
