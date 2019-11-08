@@ -15,7 +15,7 @@
  */
 
 import QtQuick 2.7
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami 2.5 as Kirigami
 import QtQuick.Controls 2.2 as QC2
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
@@ -63,7 +63,7 @@ Kirigami.ApplicationWindow  {
 			{
 				text:"Settings",
 				iconName:"settings",
-				pageUrl:"pages/SettingsPage.qml",
+                component: Qt.createComponent("pages/SettingsPage.qml"),
 			},
 			{
 				text:"Info",
@@ -72,7 +72,7 @@ Kirigami.ApplicationWindow  {
 
 			},
             {
-// 				text:"Main Page",
+ 				text:"Main Page",
 				iconName:"external-link",
 				pageUrl:"pages/MainPage.qml",
 
@@ -86,14 +86,26 @@ Kirigami.ApplicationWindow  {
 			}
 		}
 
-		onMenuClicked: {
+		onMenuClicked: {            
             if(itemData) {
-                pageStack.push( Qt.resolvedUrl(itemData.pageUrl) );
+                if(itemData.component) {
+                    pageStack.push( itemData.component );
+                } else if(itemData.pageUrl) {
+                    pageStack.push( Qt.resolvedUrl(itemData.pageUrl) );
+                } else {
+                    console.log("No component defined for "+ itemData.text);
+                }
             }
 		}
 		onSectionClicked: {
-			if(itemData) {
-				pageStack.push(Qt.resolvedUrl(itemData.pageUrl) );
+			if(itemData && mainSections.currentSection != itemData.text) {
+				 if(itemData.component) {
+                    pageStack.push( itemData.component );
+                } else if(itemData.pageUrl) {
+                    pageStack.push( Qt.resolvedUrl(itemData.pageUrl) );
+                } else {
+                    console.log("No component defined for "+ itemData.text);
+                }
                 mainSections.currentSection = itemData.text
 			}
 		}

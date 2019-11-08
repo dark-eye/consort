@@ -1,0 +1,3 @@
+[submodule "qml/components/common"]
+	path = qml/components/common
+	url = git@github.com:dark-eye/ubports-common-components.git
